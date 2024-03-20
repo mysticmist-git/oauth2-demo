@@ -15,6 +15,7 @@ mongoose
   .then(() => console.log('MongoDB connected!'))
   .catch((err) => console.log('MongoDB error', err));
 
+const auth = require('./middlewares/auth');
 const oAuthRouter = require('./routes/oauth');
 const mailsRouter = require('./routes/mails');
 const userRouter = require('./routes/user');
@@ -40,8 +41,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/oauth', oAuthRouter);
-app.use('/mails', mailsRouter);
-app.use('/user', userRouter);
+app.use('/mails', auth, mailsRouter);
+app.use('/user', auth, userRouter);
 app.use('/test', testRouter);
 
 // catch 404 and forward to error handler

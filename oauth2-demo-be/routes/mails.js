@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const { google } = require('googleapis');
 
-const jwt = require('jsonwebtoken');
-
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
@@ -10,10 +8,7 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 router.get('/', async function (req, res, next) {
-  const jwtToken = req.cookies.token;
-  const tokens = jwt.verify(jwtToken, process.env.JWT_SECRET);
-
-  console.log('tokens', tokens);
+  const tokens = req.tokens;
 
   oauth2Client.setCredentials(tokens);
 
