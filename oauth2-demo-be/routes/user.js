@@ -1,6 +1,5 @@
 const router = require('express').Router();
 
-const { jwtDecode } = require('jwt-decode');
 const User = require('../models/user');
 
 // GET userinfo

@@ -115,23 +115,6 @@ const Home = () => {
     });
   }, []);
 
-  const handleGetMails = async () => {
-    setMailLoading(true);
-    try {
-      const {
-        data: { messages },
-      } = await axios.get(ENDPOINTS.MAILS, {
-        withCredentials: true,
-      });
-      setMails(messages);
-    } catch (error) {
-      console.log('fail to get mails', error);
-      setMails([]);
-    } finally {
-      setMailLoading(false);
-    }
-  };
-
   const handleUpdateIntroduction = async () => {
     try {
       await axios.patch(
@@ -152,15 +135,32 @@ const Home = () => {
     }
   };
 
-  const [selectedMail, setSelectedMail] = useState<any | null>(null);
-  const { from, date, subject } = useMessage(selectedMail);
-  const handleSelectMail = function (mail: any) {
-    setSelectedMail(mail);
-    setMailModalOpen(true);
+  const handleGetMails = async () => {
+    setMailLoading(true);
+    try {
+      const {
+        data: { messages },
+      } = await axios.get(ENDPOINTS.MAILS, {
+        withCredentials: true,
+      });
+      setMails(messages);
+    } catch (error) {
+      console.log('fail to get mails', error);
+      setMails([]);
+    } finally {
+      setMailLoading(false);
+    }
   };
 
-  const [mailModalOpen, setMailModalOpen] = useState(false);
-  const body = useBody(selectedMail);
+  const [selectedMessage, setSelectedMail] = useState<any | null>(null);
+  const { from, date, subject } = useMessage(selectedMessage);
+  const handleSelectMail = function (mail: any) {
+    setSelectedMail(mail);
+    setMessageModalOpen(true);
+  };
+
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const body = useBody(selectedMessage);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -255,7 +255,7 @@ const Home = () => {
         </div>
       </div>
       <Modal
-        isOpen={mailModalOpen}
+        isOpen={messageModalOpen}
         onAfterOpen={() => {}}
         onRequestClose={() => {}}
         style={customStyles}
@@ -267,7 +267,7 @@ const Home = () => {
               <button
                 className="shadow border border-gray-600 hover:border-gray-800 active:border-white rounded-full px-2 text-gray-600 hover:text-gray-800 active:text-white bg-white active:bg-red-800 transition-all"
                 onClick={() => {
-                  setMailModalOpen(false);
+                  setMessageModalOpen(false);
                   setSelectedMail(null);
                 }}
               >

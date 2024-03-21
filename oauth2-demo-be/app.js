@@ -3,12 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 
+const dotenv = require('dotenv');
 dotenv.config();
 
+const mongoose = require('mongoose');
 const db = process.env.MONGO_URI + '/oauth2-demo';
 mongoose
   .connect(db)
@@ -23,6 +22,7 @@ const userRouter = require('./routes/user');
 const testRouter = require('./routes/test');
 
 const app = express();
+const cors = require('cors');
 app.use(
   cors({
     origin: 'http://localhost:5173',
